@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.PersonProfileActivity"
+    android:background="@color/profileColor">
+
+    <include
+        android:id="@+id/person_profile_toolbar"
+        layout="@layout/app_bar_layout">
+    </include>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="1dp"
+        android:layout_marginTop="70dp"
+        android:scrollbarThumbVertical="@color/white">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/person_profile_image"
+                android:layout_width="250dp"
+                android:layout_height="250dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="40dp"
+                android:src="@drawable/profile" />
+
+            <TextView
+                android:id="@+id/person_profile_username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Profile Username"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:layout_below="@+id/person_profile_image"
+                android:layout_marginTop="20dp"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/person_profile_fullname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Profile Fullname"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:layout_below="@+id/person_profile_username"
+                android:layout_marginTop="5dp"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textStyle="italic"/>
+
+            <TextView
+                android:id="@+id/person_profile_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/person_profile_fullname"
+                android:layout_marginTop="5dp"
+                android:text="Hello anh em chao mung anh em den voi profile cua toi nha"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textColor="@color/material_dynamic_neutral70"
+                android:textSize="22sp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"/>
+
+<!--            <LinearLayout-->
+<!--                android:id="@+id/person_linear"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_below="@id/person_profile_status"-->
+<!--                android:orientation="horizontal"-->
+<!--                android:padding="20dp"-->
+<!--                android:gravity="center">-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="110dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:orientation="vertical"-->
+<!--                    android:gravity="center"-->
+<!--                    android:padding="20dp">-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="Friends"-->
+<!--                        android:textColor="@color/white"-->
+<!--                        android:textSize="18sp"-->
+<!--                        android:textStyle="bold"-->
+<!--                        android:layout_gravity="center"/>-->
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/friend_count"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:textColor="@color/white"-->
+<!--                        android:text="0"-->
+<!--                        android:textStyle="italic"-->
+<!--                        android:textSize="18sp" />-->
+
+<!--                </LinearLayout>-->
+
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="110dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:orientation="vertical"-->
+<!--                    android:gravity="center"-->
+<!--                    android:padding="20dp">-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_gravity="center"-->
+<!--                        android:text="Liked"-->
+<!--                        android:textColor="@color/white"-->
+<!--                        android:textSize="18sp"-->
+<!--                        android:textStyle="bold" />-->
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/liked_count"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:textColor="@color/white"-->
+<!--                        android:text="0"-->
+<!--                        android:textStyle="italic"-->
+<!--                        android:textSize="18sp" />-->
+<!--                </LinearLayout>-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="110dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:orientation="vertical"-->
+<!--                    android:gravity="center"-->
+<!--                    android:padding="20dp">-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_gravity="center"-->
+<!--                        android:text="Posts"-->
+<!--                        android:textColor="@color/white"-->
+<!--                        android:textSize="18sp"-->
+<!--                        android:textStyle="bold" />-->
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/posts_count"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:textColor="@color/white"-->
+<!--                        android:text="0"-->
+<!--                        android:textStyle="italic"-->
+<!--                        android:textSize="18sp" />-->
+<!--                </LinearLayout>-->
+
+
+<!--            </LinearLayout>-->
+
+            <TextView
+                android:id="@+id/person_profile_country"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/person_profile_status"
+                android:layout_marginTop="60dp"
+                android:text="Viet Nam"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/person_profile_dob"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/person_profile_country"
+                android:layout_marginTop="5dp"
+                android:text="DD-MM-YYYY"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/person_profile_gender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/person_profile_dob"
+                android:layout_marginTop="5dp"
+                android:text="Gender"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/person_send_friend_request"
+                android:layout_width="230dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/person_profile_gender"
+                android:layout_marginTop="45dp"
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:text="Add Friend"
+                app:cornerRadius="0dp"
+                android:layout_centerHorizontal="true"
+                android:textSize="16sp"/>
+
+            <Button
+                android:id="@+id/person_decline_friend_request"
+                android:layout_width="230dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/person_send_friend_request"
+                android:layout_marginTop="5dp"
+                android:backgroundTint="@color/colorPrimary"
+                android:text="Cancel Request"
+                app:cornerRadius="0dp"
+                android:layout_centerHorizontal="true"
+                android:textSize="16sp"/>
+
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

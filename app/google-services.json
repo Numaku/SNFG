@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "770817285676",
+    "project_id": "socialnetworkforgamer-1843d",
+    "storage_bucket": "socialnetworkforgamer-1843d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:770817285676:android:77224de10da6939eb9fb89",
+        "android_client_info": {
+          "package_name": "com.example.socialnetworkforgamer"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDNUCEDvVBwEEfsXbVW_zcyhKw1AQj6xb8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

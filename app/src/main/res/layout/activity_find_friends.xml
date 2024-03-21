@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.FindFriendsActivity"
+    android:background="@color/profileColor">
+
+    <include
+        android:id="@+id/find_friends_toolbar"
+        layout="@layout/app_bar_layout">
+
+    </include>
+
+    <RelativeLayout
+        android:id="@+id/findFriendLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/find_friends_toolbar">
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:queryHint="Find new friends"
+            app:iconifiedByDefault="false"
+            android:background="@drawable/search"
+            android:layout_marginTop="15dp"
+            app:queryBackground="@android:color/transparent"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"/>
+
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/search_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/findFriendLayout"
+        android:layout_margin="20dp">
+
+    </androidx.recyclerview.widget.RecyclerView>
+    
+</RelativeLayout>
