@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/login"
+    android:background="@drawable/fate"
     tools:context=".activity.LoginActivity">
     
     <RelativeLayout
@@ -142,45 +142,45 @@
 
             <View
                 android:layout_width="wrap_content"
-                android:layout_height="10dp"/>
+                android:layout_height="90dp"/>
 
-            <TextView
-                android:id="@+id/text_other_method"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Or login with other method"
-                android:alpha="0.7"
-                android:layout_gravity="center"/>
+<!--            <TextView-->
+<!--                android:id="@+id/text_other_method"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Or login with other method"-->
+<!--                android:alpha="0.7"-->
+<!--                android:layout_gravity="center"/>-->
 
-            <LinearLayout
-                android:id="@+id/other_method"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center">
+<!--            <LinearLayout-->
+<!--                android:id="@+id/other_method"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="horizontal"-->
+<!--                android:gravity="center">-->
 
-                <ImageView
-                    android:id="@+id/facebook_signin_button"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:layout_margin="12dp"
-                    android:src="@drawable/facebook" />
+<!--                <ImageView-->
+<!--                    android:id="@+id/facebook_signin_button"-->
+<!--                    android:layout_width="45dp"-->
+<!--                    android:layout_height="45dp"-->
+<!--                    android:layout_margin="12dp"-->
+<!--                    android:src="@drawable/facebook" />-->
 
-                <ImageView
-                    android:id="@+id/x_signin_button"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:layout_margin="12dp"
-                    android:src="@drawable/git"/>
+<!--                <ImageView-->
+<!--                    android:id="@+id/x_signin_button"-->
+<!--                    android:layout_width="45dp"-->
+<!--                    android:layout_height="45dp"-->
+<!--                    android:layout_margin="12dp"-->
+<!--                    android:src="@drawable/git"/>-->
 
-                <ImageView
-                    android:id="@+id/google_signin_button"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="12dp"
-                    android:src="@drawable/google" />
+<!--                <ImageView-->
+<!--                    android:id="@+id/google_signin_button"-->
+<!--                    android:layout_width="40dp"-->
+<!--                    android:layout_height="40dp"-->
+<!--                    android:layout_marginLeft="12dp"-->
+<!--                    android:src="@drawable/google" />-->
 
-            </LinearLayout>
+<!--            </LinearLayout>-->
 
             <View
                 android:layout_width="wrap_content"

@@ -68,7 +68,7 @@
                 android:text="Hello anh em chao mung anh em den voi profile cua toi nha"
                 android:textAlignment="center"
                 android:textAllCaps="false"
-                android:textColor="@color/material_dynamic_neutral70"
+                android:textColor="@color/grey"
                 android:textSize="18sp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"/>

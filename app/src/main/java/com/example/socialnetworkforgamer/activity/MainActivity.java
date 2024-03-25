@@ -2,7 +2,6 @@ package com.example.socialnetworkforgamer.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -38,7 +37,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -413,7 +411,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void SendUserToSettingActivity(){
-        Intent settingIntent = new Intent(MainActivity.this, SettingActivity.class);
+        Intent settingIntent = new Intent(MainActivity.this, OptionActivity.class);
         startActivity(settingIntent);
     }
 

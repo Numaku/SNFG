@@ -12,14 +12,10 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
 import com.example.socialnetworkforgamer.R;
-import com.example.socialnetworkforgamer.base.BaseActivity;
-import com.example.socialnetworkforgamer.databinding.ActivityClickPostBinding;
 import com.example.socialnetworkforgamer.databinding.ActivitySettingBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -30,7 +26,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -39,14 +34,13 @@ import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.HashMap;
-
-import de.hdodenhof.circleimageview.CircleImageView;
+import java.util.Map;
 
 public class SettingActivity extends AppCompatActivity {
 
     private ActivitySettingBinding binding;
     private Toolbar mToolbar;
-    private DatabaseReference settingUserRef;
+    private DatabaseReference settingUserRef, postRef;
     private FirebaseAuth mAuth;
     private String currentUserId;
     private String myProfileImage, myUserName, myFullName, myStatus, myCountry, myDoB, myGender;
@@ -67,7 +61,7 @@ public class SettingActivity extends AppCompatActivity {
         currentUserId = mAuth.getCurrentUser().getUid();
         settingUserRef = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserId);
         UserProfileImageRef = FirebaseStorage.getInstance().getReference().child("Profile image");
-
+        postRef = FirebaseDatabase.getInstance().getReference().child("Posts");
 
         mToolbar = findViewById(R.id.setting_toolbar);
         setSupportActionBar(mToolbar);
@@ -147,8 +141,7 @@ public class SettingActivity extends AppCompatActivity {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
                                                     if(task.isSuccessful()){
-                                                        updatePostImage();
-                                                        Toast.makeText(SettingActivity.this, "Updated Profile Image", Toast.LENGTH_SHORT).show();
+                                                        updatePostImage(downloadUrl);
                                                         //loadingBar.dismiss();
                                                     } else {
                                                         String message = task.getException().getMessage();
@@ -179,9 +172,26 @@ public class SettingActivity extends AppCompatActivity {
         }
     }
 
-    private void updatePostImage() {
-        //Bai 33
+    private void updatePostImage(final String downloadUrl) {
+        postRef.orderByChild("uid").equalTo(currentUserId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    String postKey = postSnapshot.getKey();
+                    Map<String, Object> postUpdates = new HashMap<>();
+                    postUpdates.put("/Posts/" + postKey + "/profileimage", downloadUrl); // Cập nhật URL hình ảnh mới
+                    // Cập nhật dữ liệu cho từng bài đăng
+                    FirebaseDatabase.getInstance().getReference().updateChildren(postUpdates);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Xử lý khi có lỗi xảy ra
+            }
+        });
     }
+
 
     private void ValidateAccInfo() {
         String username = binding.settingUsername.getText().toString();
@@ -226,6 +236,24 @@ public class SettingActivity extends AppCompatActivity {
                 }
             }
         });
+
+        postRef.orderByChild("uid").equalTo(currentUserId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    String postKey = postSnapshot.getKey();
+                    Map<String, Object> postUpdates = new HashMap<>();
+                    postUpdates.put("/Posts/" + postKey + "/username", username); // Thay đổi tên người dùng mới ở đây
+                    FirebaseDatabase.getInstance().getReference().updateChildren(postUpdates);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Xử lý khi có lỗi xảy ra
+            }
+        });
+
     }
 
     private void SendUserToMainActivity() {

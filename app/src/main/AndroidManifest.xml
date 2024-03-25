@@ -17,9 +17,13 @@
         android:theme="@style/Theme.SocialNetWorkForGamer"
         tools:targetApi="31">
         <activity
-            android:name=".activity.RequestActivity"
+            android:name=".activity.OptionActivity"
             android:exported="false"
             android:parentActivityName=".activity.MainActivity"/>
+        <activity
+            android:name=".activity.RequestActivity"
+            android:exported="false"
+            android:parentActivityName=".activity.MainActivity" />
         <activity
             android:name=".base.BaseActivity"
             android:exported="false" />

@@ -52,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
         userEmail = findViewById(R.id.login_email);
         userPassword = findViewById(R.id.login_password);
         loginButton = findViewById(R.id.login_button);
-        googleSigninButton = findViewById(R.id.google_signin_button);
+        //googleSigninButton = findViewById(R.id.google_signin_button);
         fogetPass = findViewById(R.id.forget_pass_link);
         loadingBar = new ProgressDialog(this);
 

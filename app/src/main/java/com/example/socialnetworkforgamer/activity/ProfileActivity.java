@@ -6,23 +6,17 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.socialnetworkforgamer.R;
-import com.example.socialnetworkforgamer.base.BaseActivity;
 import com.example.socialnetworkforgamer.databinding.ActivityProfileBinding;
-import com.google.android.material.tabs.TabLayout;
-import com.google.firebase.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
 
 public class ProfileActivity extends AppCompatActivity {
 
