@@ -2,6 +2,7 @@ package com.example.socialnetworkforgamer.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -37,6 +38,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -45,7 +47,7 @@ import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends AppCompatActivity {
 
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
@@ -110,7 +112,7 @@ public class MainActivity extends BaseActivity {
 
                     if(snapshot.hasChild("profile image")){
                         String image = snapshot.child("profile image").getValue().toString();
-                        Glide.with(getApplicationContext()).load(image).placeholder(R.drawable.profile).into(navProfileImage);
+                        Picasso.get().load(image).placeholder(R.drawable.profile).into(navProfileImage);
                     }
                     else {
 
@@ -187,8 +189,8 @@ public class MainActivity extends BaseActivity {
                         holder.postDate.setText(String.valueOf(model.getDate()));
                         holder.postDescription.setText(String.valueOf(model.getDescription()));
                         holder.postTime.setText(String.valueOf(model.getTime()));
-                        Glide.with(getApplicationContext()).load(model.getProfileimage()).into(holder.profileImage);
-                        Glide.with(getApplicationContext()).load(model.getPostimage()).into(holder.postImage);
+                        Picasso.get().load(model.getProfileimage()).into(holder.profileImage);
+                        Picasso.get().load(model.getPostimage()).into(holder.postImage);
 
                         holder.setLikeButtonStatus(postKey);
 
@@ -251,7 +253,7 @@ public class MainActivity extends BaseActivity {
         firebaseRecyclerAdapter.startListening();
         postList.setAdapter(firebaseRecyclerAdapter);
 
-        updateUserStatus("online");
+
     }
 
 
@@ -340,18 +342,8 @@ public class MainActivity extends BaseActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser == null){
             SendUserToLoginActivity();
-        }else {
-            Log.d("MainActivity", "User is not null, checking existence...");
-            CheckUserExistence();
         }
-
-        if (!isNetworkAvailable()) {
-            toggleProgressBarVisibility(true);
-            Toast.makeText(this, "Please check your internet connection...", Toast.LENGTH_LONG).show();
-        } else {
-            DisplayAllUserPosts();
-        }
-
+        updateUserStatus("online");
     }
 
     @Override

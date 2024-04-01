@@ -204,9 +204,11 @@ public class ClickPostActivity extends AppCompatActivity {
         String commentText = binding.commentInput.getText().toString();
 
         if(TextUtils.isEmpty(commentText)){
+            // Hiển thị toast chỉ khi trường nhập liệu trống
             Toast.makeText(this, "Please write your comment!", Toast.LENGTH_SHORT).show();
         }
         else {
+            // Xử lý gửi bình luận nếu trường nhập liệu không trống
             Calendar calForDate = Calendar.getInstance();
             SimpleDateFormat currentDate = new SimpleDateFormat("dd-MM-yyyy");
             final String saveCurrentDate = currentDate.format(calForDate.getTime());
@@ -221,18 +223,18 @@ public class ClickPostActivity extends AppCompatActivity {
             final String randomKey = currentUserID + saveCurrentTime + saveCurrentTime + randomChar + randomChar;
 
             HashMap commentMap = new HashMap();
-                commentMap.put("uid", currentUserID);
-                commentMap.put("comment", commentText);
-                commentMap.put("date", saveCurrentDate);
-                commentMap.put("time", saveCurrentTime);
-                commentMap.put("username", username);
-                commentMap.put("profileimage", profileimage);
+            commentMap.put("uid", currentUserID);
+            commentMap.put("comment", commentText);
+            commentMap.put("date", saveCurrentDate);
+            commentMap.put("time", saveCurrentTime);
+            commentMap.put("username", username);
+            commentMap.put("profileimage", profileimage);
 
             postRef.child(randomKey).updateChildren(commentMap).addOnCompleteListener(new OnCompleteListener() {
                 @Override
                 public void onComplete(@NonNull Task task) {
                     if (task.isSuccessful()){
-                        Toast.makeText(ClickPostActivity.this, "success", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(ClickPostActivity.this, "success", Toast.LENGTH_SHORT).show();
                     }
                     else {
                         Toast.makeText(ClickPostActivity.this, "Error! Please try again later!", Toast.LENGTH_SHORT).show();
@@ -241,6 +243,7 @@ public class ClickPostActivity extends AppCompatActivity {
             });
         }
     }
+
     private void popUpOption() {
 
         PopupMenu popupMenu = new PopupMenu(this, binding.option);

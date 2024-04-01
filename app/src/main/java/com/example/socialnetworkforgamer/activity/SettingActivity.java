@@ -180,7 +180,6 @@ public class SettingActivity extends AppCompatActivity {
                     String postKey = postSnapshot.getKey();
                     Map<String, Object> postUpdates = new HashMap<>();
                     postUpdates.put("/Posts/" + postKey + "/profileimage", downloadUrl); // Cập nhật URL hình ảnh mới
-                    // Cập nhật dữ liệu cho từng bài đăng
                     FirebaseDatabase.getInstance().getReference().updateChildren(postUpdates);
                 }
             }
@@ -201,7 +200,6 @@ public class SettingActivity extends AppCompatActivity {
         String gender = binding.settingGender.getText().toString();
         String dob = binding.settingDob.getText().toString();
 
-
         if(TextUtils.isEmpty(username)){
             Toast.makeText(this, "Please enter your username...", Toast.LENGTH_SHORT).show();
         }
@@ -211,9 +209,41 @@ public class SettingActivity extends AppCompatActivity {
         else if(TextUtils.isEmpty(status)){
             Toast.makeText(this, "Please enter your status...", Toast.LENGTH_SHORT).show();
         }
+        else if(TextUtils.isEmpty(country)){
+            Toast.makeText(this, "Please enter your country...", Toast.LENGTH_SHORT).show();
+        }
+        else if(TextUtils.isEmpty(gender)){
+            Toast.makeText(this, "Please enter your gender...", Toast.LENGTH_SHORT).show();
+        }
+        else if(TextUtils.isEmpty(dob)){
+            Toast.makeText(this, "Please enter your date of birth...", Toast.LENGTH_SHORT).show();
+        }
+        else if(!isValidGender(gender)){
+            Toast.makeText(this, "Please enter a valid gender (Male/Female/Other)", Toast.LENGTH_SHORT).show();
+        }
+        else if(!isValidDOB(dob)){
+            Toast.makeText(this, "Please enter a valid date of birth (DD/MM/YYYY)", Toast.LENGTH_SHORT).show();
+        }
         else {
             UpdateAccInfo(username, fullname, status, country, dob, gender);
         }
+    }
+
+    private boolean isValidGender(String gender) {
+        // Kiểm tra xem giới tính có hợp lệ hay không
+        String[] validGenders = {"Male", "Female", "Other"};
+        for(String validGender : validGenders) {
+            if(gender.equalsIgnoreCase(validGender)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isValidDOB(String dob) {
+        // Kiểm tra xem ngày sinh có hợp lệ hay không (định dạng YYYY-MM-DD)
+        String regex = "\\d{2}/\\d{2}/\\d{4}";
+        return dob.matches(regex);
     }
 
     private void UpdateAccInfo(String username, String fullname, String status, String country, String dob, String gender) {
@@ -222,7 +252,7 @@ public class SettingActivity extends AppCompatActivity {
             userMap.put("fullname", fullname);
             userMap.put("status", status);
             userMap.put("country", country);
-            //userMap.put("gender", gender);
+            userMap.put("gender", gender);
             userMap.put("dob", dob);
         settingUserRef.updateChildren(userMap).addOnCompleteListener(new OnCompleteListener() {
             @Override

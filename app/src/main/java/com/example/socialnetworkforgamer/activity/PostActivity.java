@@ -104,7 +104,7 @@ public class PostActivity extends AppCompatActivity {
             loadingBar.setTitle("Posting");
             loadingBar.setMessage("Please wait...");
             loadingBar.show();
-            loadingBar.setCanceledOnTouchOutside(true);
+            loadingBar.setCanceledOnTouchOutside(false);
 
             StoringImageToStorge();
         }
@@ -198,8 +198,9 @@ public class PostActivity extends AppCompatActivity {
                             }
                             else{
                                 Toast.makeText(PostActivity.this, "Error, Please try again!", Toast.LENGTH_SHORT).show();
-                                loadingBar.dismiss();
+
                             }
+                            loadingBar.dismiss();
                         }
                     });
                 }
@@ -238,7 +239,9 @@ public class PostActivity extends AppCompatActivity {
 
     private void SendUserToMainActivity() {
         Intent mainIntent = new Intent(PostActivity.this, MainActivity.class);
+        //mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(mainIntent);
+        finish();
 
     }
 }
