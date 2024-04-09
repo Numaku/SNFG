@@ -5,6 +5,7 @@
     android:id="@+id/drawable_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".activity.MainActivity">
 
     <RelativeLayout
@@ -14,45 +15,43 @@
         <include
             android:id="@+id/main_page_toolbar"
             layout="@layout/app_bar_layout">
-
         </include>
 
-        <FrameLayout
-            android:id="@+id/main_container"
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/search_view"
+            android:layout_below="@id/main_page_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:queryHint="Search by hashtag..."
+            android:background="@drawable/hashtag"
+            app:iconifiedByDefault="false"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            app:queryBackground="@android:color/transparent"
+            app:layout_constraintTop_toBottomOf="@id/main_page_toolbar" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/all_user_post_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="62dp">
-
-            <ProgressBar
-                android:id="@+id/progress_bar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:visibility="gone" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/all_user_post_list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="5dp"/>
-        </FrameLayout>
+            android:layout_below="@id/search_view"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp" />
 
         <ImageButton
             android:id="@+id/add_new_post_button"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_marginTop="10dp"
             android:layout_alignParentEnd="true"
-            android:src="@drawable/add_post_high"
-            android:scaleType="centerCrop"
             android:layout_marginRight="12dp"
+            android:layout_marginTop="10dp"
             android:background="@color/colorPrimaryDark"
-            android:contentDescription="Add New Post"
             android:baselineAlignBottom="false"
+            android:contentDescription="Add New Post"
             android:focusableInTouchMode="false"
-            />
-
+            android:scaleType="centerCrop"
+            android:src="@drawable/add_post_high" />
 
     </RelativeLayout>
 
@@ -62,6 +61,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:layout_marginBottom="3dp"
-        app:menu="@menu/navigation_menu"></com.google.android.material.navigation.NavigationView>
+        app:menu="@menu/navigation_menu" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

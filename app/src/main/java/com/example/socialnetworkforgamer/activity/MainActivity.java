@@ -3,20 +3,22 @@ package com.example.socialnetworkforgamer.activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -25,7 +27,6 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.socialnetworkforgamer.R;
-import com.example.socialnetworkforgamer.base.BaseActivity;
 import com.example.socialnetworkforgamer.model.Posts;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -43,6 +44,7 @@ import com.squareup.picasso.Picasso;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -58,10 +60,15 @@ public class MainActivity extends AppCompatActivity {
     private TextView navUsername;
     private ImageButton addNewPostButton;
     private FirebaseAuth mAuth;
+    private SearchView searchView;
     private DatabaseReference UsersRef, PostsRef, LikesRef;
     String currentUserID;
     boolean likeCheck = false;
-//    private FirebaseRecyclerAdapter<Posts, PostViewHolder> firebaseRecyclerAdapter;
+
+    private FirebaseRecyclerAdapter<Posts, PostViewHolder> adapter;
+    private FirebaseRecyclerAdapter<Posts, PostViewHolder> firebaseRecyclerAdapter;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
         actionBarDrawerToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         navigationView = findViewById(R.id.navigation_view);
+        searchView = findViewById(R.id.search_view);
 
         postList = findViewById(R.id.all_user_post_list);
         postList.setHasFixedSize(true);
@@ -99,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
         View navView = navigationView.inflateHeaderView(R.layout.navigation_header);
         navProfileImage = navView.findViewById(R.id.nav_profile_image);
         navUsername = navView.findViewById(R.id.nav_user_full_name);
+
 
         //hiển thị username, avatar
         UsersRef.child(currentUserID).addValueEventListener(new ValueEventListener() {
@@ -142,8 +151,108 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //tìm kiếm bài viết
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchPost(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                searchPost(newText);
+                return true;
+            }
+        });
+
         //hiển thị bài viết
         DisplayAllUserPosts();
+    }
+
+    private void searchPost(String searchText) {
+        if (TextUtils.isEmpty(searchText)) {
+            if (adapter != null) {
+                adapter.stopListening();
+            }
+            postList.setAdapter(firebaseRecyclerAdapter);
+            return;
+        }
+        FirebaseRecyclerOptions<Posts> options =
+                new FirebaseRecyclerOptions.Builder<Posts>()
+                        .setQuery(PostsRef.orderByChild("hashtag").startAt(searchText).endAt(searchText + "\uf8ff"), Posts.class)
+                        .build();
+        adapter = new FirebaseRecyclerAdapter<Posts, PostViewHolder>(options) {
+            @Override
+            protected void onBindViewHolder(@NonNull PostViewHolder holder, int position, @NonNull Posts model) {
+                final String postKey = getRef(position).getKey();
+
+                holder.username.setText(String.valueOf(model.getUsername()));
+                holder.postDate.setText(String.valueOf(model.getDate()));
+                holder.postDescription.setText(String.valueOf(model.getDescription()));
+                holder.postTime.setText(String.valueOf(model.getTime()));
+                Picasso.get().load(model.getProfileimage()).into(holder.profileImage);
+                Picasso.get().load(model.getPostimage()).into(holder.postImage);
+                holder.hashtag.setText(String.valueOf(model.getHashtag()));
+
+                holder.setLikeButtonStatus(postKey);
+
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent clickPostIntent = new Intent(MainActivity.this, ClickPostActivity.class);
+                        clickPostIntent.putExtra("PostKey", postKey);
+                        startActivity(clickPostIntent);
+                    }
+                });
+
+                holder.commentButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent commentIntent = new Intent(MainActivity.this, ClickPostActivity.class);
+                        commentIntent.putExtra("PostKey", postKey);
+                        startActivity(commentIntent);
+                    }
+                });
+
+                holder.likeButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        likeCheck = true;
+
+                        LikesRef.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                if(likeCheck == true){
+                                    if (snapshot.child(postKey).hasChild(currentUserID)){
+                                        LikesRef.child(postKey).child(currentUserID).removeValue();
+                                        likeCheck = false;
+                                    }
+                                    else {
+                                        LikesRef.child(postKey).child(currentUserID).setValue(true);
+                                        likeCheck = false;
+                                    }
+                                }
+                            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+                    }
+                });
+            }
+            @NonNull
+            @Override
+            public PostViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.all_posts_layout, parent, false);
+                PostViewHolder viewHolder = new PostViewHolder(view);
+                return viewHolder;
+            }
+        };
+        adapter.startListening();
+        postList.setAdapter(adapter);
     }
 
     public void updateUserStatus(String state){
@@ -178,7 +287,7 @@ public class MainActivity extends AppCompatActivity {
                         .setQuery(sortPostsDescendingOrder, Posts.class)
                         .build();
 
-        FirebaseRecyclerAdapter<Posts, PostViewHolder> firebaseRecyclerAdapter =
+         firebaseRecyclerAdapter =
                 new FirebaseRecyclerAdapter<Posts, PostViewHolder>(options) {
                     @Override
                     protected void onBindViewHolder(@NonNull PostViewHolder holder, int position, @NonNull Posts model) {
@@ -191,6 +300,7 @@ public class MainActivity extends AppCompatActivity {
                         holder.postTime.setText(String.valueOf(model.getTime()));
                         Picasso.get().load(model.getProfileimage()).into(holder.profileImage);
                         Picasso.get().load(model.getPostimage()).into(holder.postImage);
+                        holder.hashtag.setText(String.valueOf(model.getHashtag()));
 
                         holder.setLikeButtonStatus(postKey);
 
@@ -252,15 +362,13 @@ public class MainActivity extends AppCompatActivity {
                 };
         firebaseRecyclerAdapter.startListening();
         postList.setAdapter(firebaseRecyclerAdapter);
-
-
     }
 
 
 
     public static class PostViewHolder extends RecyclerView.ViewHolder {
 
-        TextView username,postDate,postTime,postDescription,likeCount;
+        TextView username,postDate,postTime,postDescription,likeCount,hashtag;
         CircleImageView profileImage;
         ImageView postImage;
         ImageButton likeButton, commentButton;
@@ -279,9 +387,12 @@ public class MainActivity extends AppCompatActivity {
             likeCount = itemView.findViewById(R.id.like_count);
             likeButton = itemView.findViewById(R.id.like_button);
             commentButton = itemView.findViewById(R.id.comment_button);
+            hashtag = itemView.findViewById(R.id.hashtag);
+
 
             likeRef = FirebaseDatabase.getInstance().getReference().child("Likes");
             currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
         }
 
         public void setLikeButtonStatus(final String postKey){
@@ -338,7 +449,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
+        CheckUserExistence();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser == null){
             SendUserToLoginActivity();
@@ -346,11 +457,11 @@ public class MainActivity extends AppCompatActivity {
         updateUserStatus("online");
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        updateUserStatus("offline");
-    }
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        updateUserStatus("offline");
+//    }
 
     //kiểm tra
     private void CheckUserExistence() {
@@ -371,21 +482,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
-
-    // Phương thức để hiển thị hoặc ẩn ProgressBar
-    private void toggleProgressBarVisibility(boolean show) {
-        ProgressBar progressBar = findViewById(R.id.progress_bar);
-        if (show) {
-            progressBar.setVisibility(View.VISIBLE);
-        } else {
-            progressBar.setVisibility(View.GONE);
-        }
-    }
 
     //điều huớng
     private void SendUserToSetUpActivity() {
@@ -427,8 +523,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(messgesIntent);
     }
 
-    private void SendUserToRequestActivity(){
-        Intent requestIntent = new Intent(MainActivity.this, RequestActivity.class);
+    private void SendUserToMainActivity(){
+        Intent requestIntent = new Intent(MainActivity.this, MainActivity.class);
         startActivity(requestIntent);
     }
 
@@ -443,7 +539,7 @@ public class MainActivity extends AppCompatActivity {
             SendUserToProfileActivity();
         }
         else if (itemId == R.id.nav_home){
-            //SendUserToRequestActivity();
+            SendUserToMainActivity();
             Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
         }
         else if (itemId == R.id.nav_friends){

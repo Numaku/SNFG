@@ -16,9 +16,9 @@
         android:layout_width="122dp"
         android:layout_height="74dp"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
         android:layout_marginStart="14dp"
-        android:layout_marginTop="457dp"
+        android:layout_below="@id/post_hashtag"
+        android:layout_marginTop="10dp"
         android:scaleType="fitCenter"
         app:srcCompat="@drawable/select_image"
         android:contentDescription="Post your image"/>
@@ -31,7 +31,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="5dp"
-        android:layout_marginTop="228dp"
+        android:layout_marginTop="200dp"
         android:layout_marginEnd="5dp"
         android:background="@drawable/post_border"
         android:ems="10"
@@ -39,6 +39,21 @@
         android:hint="Let's share your favorite game?"
         android:inputType="textMultiLine"
         android:padding="8dp" />
+
+        <EditText
+            android:id="@+id/post_hashtag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/post_description"
+            android:hint="#hashtag (First hashtag is the most important)"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/post_border"
+            android:layout_marginTop="15dp"
+            android:textColor="@color/com_facebook_messenger_blue"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:padding="8dp"/>
 
     <Button
         android:id="@+id/post_button"

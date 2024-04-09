@@ -44,10 +44,10 @@ public class PostActivity extends AppCompatActivity {
     private ProgressDialog loadingBar;
     private ImageButton selectPostImage;
     private Button postButton;
-    private EditText postDecsription;
+    private EditText postDecsription, postHashtag;
     private static final int Gallery_pick = 1;
     private Uri ImageUri;
-    private String description;
+    private String description, hashtag;
     private StorageReference postImageRef;
     private DatabaseReference userRef, postRef;
     private FirebaseAuth mAuth;
@@ -62,6 +62,7 @@ public class PostActivity extends AppCompatActivity {
         selectPostImage = findViewById(R.id.select_post_image);
         postButton = findViewById(R.id.post_button);
         postDecsription = findViewById(R.id.post_description);
+        postHashtag = findViewById(R.id.post_hashtag);
         loadingBar = new ProgressDialog(this);
 
         mAuth = FirebaseAuth.getInstance();
@@ -94,6 +95,14 @@ public class PostActivity extends AppCompatActivity {
 
     private void validatePost() {
         description = postDecsription.getText().toString();
+        hashtag = postHashtag.getText().toString();
+        if(TextUtils.isEmpty(hashtag)){
+            hashtag = "";
+        } else if (!hashtag.startsWith("#")){
+            Toast.makeText(this, "Please write the correct format: #yourhashtag", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         if(TextUtils.isEmpty(description)){
             Toast.makeText(this, "Please write something and retry!", Toast.LENGTH_SHORT).show();
         }
@@ -188,6 +197,7 @@ public class PostActivity extends AppCompatActivity {
                         postMap.put("profileimage", userProfileImage);
                         postMap.put("username", userName);
                         postMap.put("counter", countPosts);
+                        postMap.put("hashtag", hashtag);
                     postRef.child(currentUserID + postRandomName).updateChildren(postMap).addOnCompleteListener(new OnCompleteListener() {
                         @Override
                         public void onComplete(@NonNull Task task) {
@@ -242,6 +252,5 @@ public class PostActivity extends AppCompatActivity {
         //mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(mainIntent);
         finish();
-
     }
 }

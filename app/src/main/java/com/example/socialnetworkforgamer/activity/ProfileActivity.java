@@ -66,27 +66,27 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        postsRef.orderByChild("uid")
-                .startAt(currentUserID).endAt(currentUserID + "\uf8ff")
-                        .addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                if (snapshot.exists()){
-                                    countPosts = (int) snapshot.getChildrenCount();
-                                    postID = snapshot.getChildren().toString();
-                                    binding.postsCount.setText(Integer.toString(countPosts));
-
-                                }
-                                else {
-                                    binding.postsCount.setText("error");
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-
-                            }
-                        });
+//        postsRef.orderByChild("uid")
+//                .startAt(currentUserID).endAt(currentUserID + "\uf8ff")
+//                        .addValueEventListener(new ValueEventListener() {
+//                            @Override
+//                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                                if (snapshot.exists()){
+//                                    countPosts = (int) snapshot.getChildrenCount();
+//                                    postID = snapshot.getChildren().toString();
+//                                    binding.postsCount.setText(Integer.toString(countPosts));
+//
+//                                }
+//                                else {
+//                                    binding.postsCount.setText("error");
+//                                }
+//                            }
+//
+//                            @Override
+//                            public void onCancelled(@NonNull DatabaseError error) {
+//
+//                            }
+//                        });
 
         //hiển thị thông tin người dùng
         profileUserRef.addValueEventListener(new ValueEventListener() {
@@ -118,27 +118,48 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        likesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        postsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                countPosts = 0;
                 countLiked = 0;
-                for (DataSnapshot likeSnapshot : snapshot.getChildren()) {
-                    for (DataSnapshot childSnapshot : likeSnapshot.getChildren()) { // Thay vì snapshot, bạn nên sử dụng likeSnapshot ở đây
-                        Boolean value = childSnapshot.getValue(Boolean.class); // Sử dụng Boolean.class thay vì boolean để tránh lỗi
-                        if (value != null && value) { // Kiểm tra giá trị có null không trước khi kiểm tra giá trị true
-                            countLiked++;
-                        }
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                    // Lấy ID của bài viết
+                    String postID = postSnapshot.getKey();
+
+                    // Kiểm tra nếu bài viết thuộc về người dùng hiện tại
+                    if (postSnapshot.child("uid").getValue(String.class).equals(currentUserID)) {
+                        // Tăng biến đếm số bài viết
+                        countPosts++;
+
+                        // Đếm số lượt thích cho bài viết hiện tại
+                        likesRef.child(postID).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot likesSnapshot) {
+                                // Đếm số lượt thích cho bài viết
+                                int likesCount = (int) likesSnapshot.getChildrenCount();
+                                countLiked += likesCount;
+
+                                // Cập nhật số lượng lượt thích lên giao diện
+                                binding.likedCount.setText(String.valueOf(countLiked));
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                                // Xử lý khi có lỗi xảy ra
+                            }
+                        });
                     }
                 }
-                binding.likedCount.setText(String.valueOf(countLiked)); // Chuyển đổi countLiked thành chuỗi trước khi hiển thị
+                // Cập nhật số lượng bài viết lên giao diện
+                binding.postsCount.setText(String.valueOf(countPosts));
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                // Xử lý khi có lỗi xảy ra
             }
         });
-
 
 
         //vào phần edit

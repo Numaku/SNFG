@@ -51,7 +51,7 @@ public class ClickPostActivity extends AppCompatActivity {
 
     private ActivityClickPostBinding binding;
     private String postKey, currentUserID, databaseUserID, commentKey;
-    private String description, image, profileimage, date, time, username, like;
+    private String description, image, profileimage, date, time, username, like, hashtag;
     private DatabaseReference clickPostRef, userRef, postRef;
     private FirebaseAuth mAuth;
     private Toolbar mToolbar;
@@ -94,6 +94,7 @@ public class ClickPostActivity extends AppCompatActivity {
                     date = snapshot.child("date").getValue().toString();
                     time = snapshot.child("time").getValue().toString();
                     databaseUserID = snapshot.child("uid").getValue().toString();
+                    hashtag = snapshot.child("hashtag").getValue().toString();
 
                     binding.clickPostDesc.setText(String.valueOf(description));
                     binding.clickPostProfileUsername.setText(username);
@@ -101,6 +102,7 @@ public class ClickPostActivity extends AppCompatActivity {
                     Glide.with(getApplicationContext()).load(profileimage).into(binding.clickPostProfileImage);
                     binding.clickPostDate.setText(date);
                     binding.clickPostTime.setText(time);
+                    binding.clickPostHashtag.setText(hashtag);
                 }
 
             }

@@ -30,20 +30,6 @@ public class BaseActivity extends AppCompatActivity {
         UsersRef = FirebaseDatabase.getInstance().getReference().child("Users");
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (!isFinishing()) {
-            updateUserStatus("offline");
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        updateUserStatus("online");
-    }
-
     protected void updateUserStatus(String status) {
         // Thực hiện mã để cập nhật trạng thái người dùng ở đây.
         String saveCurrentDate, saveCurrentTime;

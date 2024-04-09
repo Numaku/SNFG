@@ -102,6 +102,16 @@
                 app:trimCollapsedText="@string/read_more"
                 app:trimLength="25"
                 app:colorClickableText="@color/colorPrimaryDark"/>
+
+        <TextView
+            android:id="@+id/hashtag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="#hashtag"
+            android:textColor="@color/com_facebook_messenger_blue"
+            android:layout_marginLeft="3dp"
+            android:paddingLeft="3dp"
+            android:textStyle="bold"/>
         
             <ImageView
                 android:id="@+id/post_image"

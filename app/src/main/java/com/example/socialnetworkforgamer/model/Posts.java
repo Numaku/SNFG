@@ -8,12 +8,13 @@ public class Posts {
     public String time;
     public String username;
     public String profileimage;
+    public String hashtag;
 
     public Posts(){
 
     }
 
-    public Posts(String uid, String date, String description, String postimage, String time, String username, String profileimage) {
+    public Posts(String uid, String date, String description, String postimage, String time, String username, String profileimage, String hashtag) {
         this.uid = uid;
         this.date = date;
         this.description = description;
@@ -21,6 +22,15 @@ public class Posts {
         this.time = time;
         this.username = username;
         this.profileimage = profileimage;
+        this.hashtag = hashtag;
+    }
+
+    public String getHashtag() {
+        return hashtag;
+    }
+
+    public void setHashtag(String hashtag) {
+        this.hashtag = hashtag;
     }
 
     public String getUid() {
